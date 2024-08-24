@@ -1,82 +1,81 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/0tL1z1Gp3h0
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
-"use client";
+import React from "react";
 
-import { useState } from "react";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+function Register() {
+  // two state items, username and mobile
+  const [username, setUsername] = React.useState("");
+  const [mobile, setMobile] = React.useState("");
 
-export default function Component() {
-  const [username, setUsername] = useState("");
-  const [usernameError, setUsernameError] = useState("");
-  const [ukMobile, setUkMobile] = useState("");
-  const [ukMobileError, setUkMobileError] = useState("");
-  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setUsername(value);
-    const usernameRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    if (!usernameRegex.test(value)) {
-      setUsernameError("Invalid username");
-    } else {
-      setUsernameError("");
-    }
-  };
-  const handleUkMobileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setUkMobile(value);
-    const ukMobileRegex = /^07\d{9}$/;
-    if (!ukMobileRegex.test(value)) {
-      setUkMobileError("Invalid mobile number");
-    } else {
-      setUkMobileError("");
-    }
-  };
+  // two state items for username and mobile error
+  const [usernameError, setUsernameError] = React.useState("");
+  const [mobileError, setMobileError] = React.useState("");
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
-      <h1 className="mb-8 text-4xl font-bold">Register</h1>
-      <form className="flex space-x-4">
-        <div className="flex flex-col">
-          <Label htmlFor="username" className="mb-2">
-            Username
-          </Label>
-          <Input
-            id="username"
-            placeholder="Username"
-            className="bg-gray-800 text-white border border-gray-600"
+    <div>
+      <h1>Register</h1>
+      <form>
+        <label>
+          Username:
+          <input
+            type="text"
+            name="username"
             value={username}
-            onChange={handleUsernameChange}
+            onChange={(e) => {
+              const value = e.target.value;
+              setUsername(value);
+
+              // validate username, must be at least 8 characters long, must have at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character
+              const regex =
+                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+              if (!regex.test(value)) {
+                setUsernameError("Invalid username");
+              } else {
+                setUsernameError("");
+              }
+            }}
           />
           {usernameError && (
-            <div className="text-red-500 mt-2">{usernameError}</div>
+            <p
+              style={{
+                color: "red",
+              }}
+            >
+              {usernameError}
+            </p>
           )}
-        </div>
-        <div className="flex flex-col">
-          <Label htmlFor="uk-mobile" className="mb-2">
-            UK Mobile Number
-          </Label>
-          <Input
-            id="uk-mobile"
-            placeholder="UK Mobile Number"
-            className="bg-gray-800 text-white border border-gray-600"
-            value={ukMobile}
-            onChange={handleUkMobileChange}
+        </label>
+        <label>
+          UK Mobile Number:
+          <input
+            type="text"
+            name="mobile"
+            value={mobile}
+            onChange={(e) => {
+              const value = e.target.value;
+              setMobile(value);
+
+              // validate UK mobile number, must start with 07 and be 11 characters long
+              const regex = /^07\d{9}$/;
+              if (!regex.test(value)) {
+                setMobileError("Invalid mobile number");
+              } else {
+                setMobileError("");
+              }
+            }}
           />
-          {ukMobileError && (
-            <div className="text-red-500 mt-2">{ukMobileError}</div>
+          {mobileError && (
+            <p
+              style={{
+                color: "red",
+              }}
+            >
+              {mobileError}
+            </p>
           )}
-        </div>
-        <Button
-          type="submit"
-          className="self-end bg-pink-500 text-white border border-gray-600"
-        >
-          Submit
-        </Button>
+        </label>
+        <input type="submit" value="Submit" />
       </form>
     </div>
   );
 }
+
+export default Register;
